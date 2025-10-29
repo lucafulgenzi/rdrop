@@ -71,10 +71,15 @@
   - [X] Size definition
   - [X] Position into the center
   - [X] Gap calculation based on configs
+  - [X] Added base positioning ( top, bottom, left, right )
 - [ ] Code refactor
 - [ ] Complete README.md
 - [ ] Release on AUR
 - [ ] Animation
+
+## Lookup
+
+- Pin app
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
