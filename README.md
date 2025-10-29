@@ -67,11 +67,13 @@
 ## Roadmap
 
 - [X] Terminal creation
-- [ ] Placement
+- [X] Placement
   - [X] Size definition
-  - [ ] Position into the center
-  - [ ] Gap calculation based on configs
+  - [X] Position into the center
+  - [X] Gap calculation based on configs
 - [ ] Code refactor
+- [ ] Complete README.md
+- [ ] Release on AUR
 - [ ] Animation
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).

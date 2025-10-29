@@ -1,7 +1,7 @@
-use std::fmt::format;
 use clap::Parser;
 use dirs::home_dir;
 use serde::{Deserialize, Serialize};
+use std::fmt::format;
 use std::io;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
@@ -26,7 +26,7 @@ struct Config {
     float: bool,
     width: i32,
     height: i32,
-    gap: i32
+    gap: i32,
 }
 
 #[derive(Deserialize)]
@@ -39,7 +39,7 @@ struct Workspace {
 struct Monitor {
     width: i32,
     height: i32,
-    focused: bool
+    focused: bool,
 }
 
 /// Define struct for hyprctl client
@@ -155,15 +155,26 @@ fn calc_terminal_percentage_size(width: i32, height: i32) -> (i32, i32) {
 
     let monitor = active_monitor.unwrap();
 
-    let terminal_width = ( monitor.width * width) / 100;
+    let terminal_width = (monitor.width * width) / 100;
     let terminal_height = (monitor.height * height) / 100;
 
     (terminal_width, terminal_height)
 }
 
+fn calc_terminal_x(width: i32) -> i32 {
+    let active_monitor = find_active_monitor();
+    if active_monitor.is_none() {
+        println!("No monitor found");
+        return -1;
+    }
+
+    let monitor = active_monitor.unwrap();
+
+    let terminal_x = (monitor.width - width) / 2;
+    terminal_x
+}
+
 fn parse_commands(config: &Config, create: bool, terminal_workspace: i32) {
-
-
     if create {
         let mut command: Vec<&str> = ["exec", "[workspace special:rdrop silent;"].to_vec();
         if config.float {
@@ -176,7 +187,7 @@ fn parse_commands(config: &Config, create: bool, terminal_workspace: i32) {
         command.push(class.as_str());
         let res = dispatch_hyrpctl_command(&*command).expect("TODO: panic message");
         println!("{}", res)
-    }else {
+    } else {
         let mut command: Vec<String> = ["movetoworkspacesilent".to_string()].to_vec();
 
         let ws = get_active_workspace().expect("No active workspace found");
@@ -184,7 +195,7 @@ fn parse_commands(config: &Config, create: bool, terminal_workspace: i32) {
             println!("Moved into {}", ws.id);
             let move_to = format!("{},", ws.name);
             command.push(move_to);
-        }else {
+        } else {
             println!("Put in special workspace");
             command.push("special:rdrop,".to_string())
         }
@@ -198,15 +209,35 @@ fn parse_commands(config: &Config, create: bool, terminal_workspace: i32) {
 
         let (width, height) = calc_terminal_percentage_size(config.width, config.height);
 
-        let mut resize_command: Vec<String> = ["resizewindowpixel".to_string(), "exact".to_string(), width.to_string(), height.to_string(), ",".to_string()].to_vec();
+        let mut resize_command: Vec<String> = [
+            "resizewindowpixel".to_string(),
+            "exact".to_string(),
+            width.to_string(),
+            height.to_string(),
+            ",".to_string(),
+        ]
+        .to_vec();
         let class2 = format!("class:{}", config.class);
         resize_command.push(class2);
         let resize_command_refs: Vec<&str> = resize_command.iter().map(|s| s.as_str()).collect();
         dispatch_hyrpctl_command(&resize_command_refs).expect("TODO: panic message");
+
+        let x_pos = calc_terminal_x(width);
+
+        let mut move_command: Vec<String> = [
+            "movewindowpixel".to_string(),
+            "exact".to_string(),
+            x_pos.to_string(),
+            config.gap.to_string(),
+            ",".to_string(),
+        ]
+            .to_vec();
+        let class2 = format!("class:{}", config.class);
+        move_command.push(class2);
+        let move_command_refs: Vec<&str> = move_command.iter().map(|s| s.as_str()).collect();
+        dispatch_hyrpctl_command(&move_command_refs).expect("TODO: panic message");
+
     }
-
-
-
 }
 
 fn main() {
