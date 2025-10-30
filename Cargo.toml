@@ -1,5 +1,9 @@
 [package]
 name = "rdrop"
+license = "GPL-3.0"
+authors = ["Luca Fulgenzi <mail@lucafulgenzi.cloud>"]
+homepage = "https://github.com/lucafulgenzi/rdrop"
+repository = "https://github.com/lucafulgenzi/rdrop"
 version = "0.1.0"
 edition = "2024"
 
