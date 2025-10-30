@@ -73,13 +73,11 @@
   - [X] Gap calculation based on configs
   - [X] Added base positioning ( top, bottom, left, right )
 - [X] Code refactor
+- [X] Pin terminal to workspace
 - [ ] Complete README.md
 - [ ] Release on AUR
 - [ ] Animation
 
-## Lookup
-
-- Pin app
 - https://wiki.hypr.land/Configuring/Window-Rules/#dynamic-rules
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).

@@ -280,6 +280,13 @@ fn dispatch_terminal_resize(
     Ok(())
 }
 
+fn dispatch_terminal_pin(class: &str) -> Result<(), Box<dyn Error>> {
+    let class_arg = format!("class:{}", class);
+    let command_args: Vec<&str> = vec!["pin", &class_arg];
+    dispatch_hyrpctl_command(&command_args)?;
+    Ok(())
+}
+
 fn parse_commands(
     config: &Config,
     create: bool,
@@ -290,9 +297,6 @@ fn parse_commands(
         dispatch_terminal_init(&config.terminal, &config.class)?;
     } else {
         log::info!("Move and resize terminal session...");
-
-        let tws = terminal_workspace.expect("Terminal workspace not found during move");
-        dispatch_terminal_move(&config.class, tws)?;
 
         let monitor = find_active_monitor()?;
 
@@ -308,6 +312,11 @@ fn parse_commands(
             config.gap,
             &terminal_size,
         )?;
+
+        dispatch_terminal_pin(&config.class)?;
+
+        let tws = terminal_workspace.expect("Terminal workspace not found during move");
+        dispatch_terminal_move(&config.class, tws)?;
     }
     Ok(())
 }
