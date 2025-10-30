@@ -31,7 +31,7 @@ jobs:
         with:
           # (required) Comma-separated list of binary names (non-extension portion of filename) to build and upload.
           # Note that glob pattern is not supported yet.
-          include: LICENSE,README.md
+          include: LICENSE.txt,README.md
           bin: rdrop
           tar: unix
           zip: none
