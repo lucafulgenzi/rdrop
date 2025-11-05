@@ -287,6 +287,7 @@ fn dispatch_terminal_focus(
 
     let command_args: Vec<&str> = vec![
         "focuswindow",
+        ",",
         &class_arg,
     ];
 
