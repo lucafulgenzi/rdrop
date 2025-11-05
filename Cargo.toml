@@ -1,5 +1,6 @@
 [package]
 name = "rdrop"
+description = "Terminal dropdown utils for Hyprland (based on hyprctl)"
 license = "GPL-3.0"
 authors = ["Luca Fulgenzi <mail@lucafulgenzi.cloud>"]
 homepage = "https://github.com/lucafulgenzi/rdrop"

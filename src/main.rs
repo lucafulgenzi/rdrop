@@ -10,7 +10,7 @@ use twelf::{config, Layer};
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "hdrop",
+    name = "rdrop",
     version = "0.0.1",
     about = "Terminal dropdown utils for Hyprland (based on hyprctl)"
 )]
@@ -280,6 +280,21 @@ fn dispatch_terminal_resize(
     Ok(())
 }
 
+fn dispatch_terminal_focus(
+    class: &str
+) -> Result<(), Box<dyn Error>> {
+    let class_arg = format!("class:{}", class);
+
+    let command_args: Vec<&str> = vec![
+        "focuswindow",
+        &class_arg,
+    ];
+
+    dispatch_hyrpctl_command(&command_args)?;
+    Ok(())
+}
+
+
 fn dispatch_terminal_pin(class: &str) -> Result<(), Box<dyn Error>> {
     let class_arg = format!("class:{}", class);
     let command_args: Vec<&str> = vec!["pin", &class_arg];
@@ -317,6 +332,8 @@ fn parse_commands(
 
         let tws = terminal_workspace.expect("Terminal workspace not found during move");
         dispatch_terminal_move(&config.class, tws)?;
+
+        dispatch_terminal_focus(&config.class)?;
     }
     Ok(())
 }
