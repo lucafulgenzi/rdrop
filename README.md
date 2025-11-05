@@ -94,7 +94,7 @@ position: T
 
 ---
 
-📚 References & Inspirations
+## 📚 References & Inspirations
 
 This project was inspired by:
 - [hrop](https://github.com/Schweber/hdrop)
