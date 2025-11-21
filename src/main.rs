@@ -256,6 +256,12 @@ fn dispatch_terminal_move(class: &str, terminal_workspace: i32) -> Result<(), Bo
 
     let command_args: Vec<&str> = vec!["movetoworkspacesilent", &destination_arg, &class_arg];
     dispatch_hyrpctl_command(&command_args)?;
+
+    if ws.id != terminal_workspace {
+        dispatch_terminal_focus(&class)?;
+    }
+
+
     Ok(())
 }
 
@@ -280,21 +286,14 @@ fn dispatch_terminal_resize(
     Ok(())
 }
 
-fn dispatch_terminal_focus(
-    class: &str
-) -> Result<(), Box<dyn Error>> {
+fn dispatch_terminal_focus(class: &str) -> Result<(), Box<dyn Error>> {
     let class_arg = format!("class:{}", class);
 
-    let command_args: Vec<&str> = vec![
-        "focuswindow",
-        ",",
-        &class_arg,
-    ];
+    let command_args: Vec<&str> = vec!["focuswindow", &class_arg];
 
     dispatch_hyrpctl_command(&command_args)?;
     Ok(())
 }
-
 
 fn dispatch_terminal_pin(class: &str) -> Result<(), Box<dyn Error>> {
     let class_arg = format!("class:{}", class);
@@ -334,7 +333,6 @@ fn parse_commands(
         let tws = terminal_workspace.expect("Terminal workspace not found during move");
         dispatch_terminal_move(&config.class, tws)?;
 
-        dispatch_terminal_focus(&config.class)?;
     }
     Ok(())
 }
